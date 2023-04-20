@@ -1,0 +1,7 @@
+#https://argoproj.github.io/argo-events/quick_start/
+#
+#this url will give us all we want but it doesn't add the required crd
+
+#after the crd is set follow the url
+#
+#https://github.com/argoproj/argo-events/blob/master/docs/installation.md
