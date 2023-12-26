@@ -5,3 +5,11 @@
 #after the crd is set follow the url
 #
 #https://github.com/argoproj/argo-events/blob/master/docs/installation.md
+
+What is argo workflow?
+What is event? Events? Event source? Sensor?
+What is the objective?
+Lets speak on Workflow templates?
+Resource usage?
+
+Building our use case?

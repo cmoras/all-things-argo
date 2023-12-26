@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: s3-webhook
+  namespace: argo-events
+spec:
+  dependencies:
+  - eventName: example
+    eventSourceName: webhook
+    name: test-dep
+  template:
+    serviceAccountName: operate-workflow-sa
+  triggers:
+  - template:
+      k8s:
+        operation: create
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: s3-
+            spec:
+              entrypoint: aws
+              templates:
+              - container:
+                  args:
+                  - |
+                    aws s3 ls s3://test-s3-bucket-clen/ --region us-east-1
+                  command:
+                  - sh
+                  - -c
+                  env:
+                  - name: AWS_ACCESS_KEY_ID
+                    valueFrom:
+                      secretKeyRef:
+                        key: access_key
+                        name: aws-secret
+                  - name: AWS_SECRET_ACCESS_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        key: secret_key
+                        name: aws-secret
+                  image: amazon/aws-cli:latest
+                name: aws
+      name: s3-webhook-workflow-trigger

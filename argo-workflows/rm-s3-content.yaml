@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: rm-s3-content
+  namespace: argo-events
+spec:
+  entrypoint: rm-s3-content
+  arguments:
+    parameters:
+    - name: s3-bucket
+      value: test-s3-bucket-clen
+  templates:
+  - name: rm-s3-content
+    container:
+      image: amazon/aws-cli:latest
+      command: [sh, -c]
+      args:
+      - |
+        aws s3 rm s3://test-s3-bucket-clen/ --region us-east-1
+      env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: access_key
+              name: aws-secret
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: secret_key
+              name: aws-secret
+

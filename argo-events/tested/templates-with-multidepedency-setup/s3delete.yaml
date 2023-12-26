@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: s3-delete
+  namespace: argo-events 
+ 
+spec:
+  entrypoint: aws
+  templates:
+  - name: aws
+    container:
+      image: amazon/aws-cli:latest
+      command: [sh, -c]
+      args:
+      - |
+        aws s3 rm s3://test-s3-bucket-clen/heads/  --recursive --dryrun  --region us-east-1
+      env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              key: access_key
+              name: aws-secret
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: secret_key
+              name: aws-secret
+
