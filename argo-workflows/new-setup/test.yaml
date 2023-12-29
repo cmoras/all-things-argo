@@ -1,8 +1,0 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Workflow
-metadata:
-  name: my-chaos-workflow
-spec:
-  workflowTemplateRef:
-    name: chaos-mesh-pod-kill-template
-
